@@ -7,12 +7,12 @@ return [
     | header and return to the user, if false only
     | the Content-Type will be copied.
     */
-    "override_header" => true,
+    "override_header" => env('OVERRIDE_HEADER', true),
 
     /*
     | If the Microservice not return a Content-Type header
     | this will be used.
     */
-    "default_content_type" => "text/html; charset=UTF-8",
+    "default_content_type" => env('DEFAULT_CONTENT_TYPE', "text/html; charset=UTF-8"),
 
 ];
