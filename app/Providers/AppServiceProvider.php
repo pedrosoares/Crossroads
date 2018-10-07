@@ -33,10 +33,10 @@ class AppServiceProvider extends ServiceProvider {
                 'middleware' => $middleware
             ]);
         }
+
         $this->app->singleton(Request::class, function () {
             return Request::capture();
         });
-
 
         $this->app->alias(Request::class, 'request');
 

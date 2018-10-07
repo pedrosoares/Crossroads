@@ -15,4 +15,17 @@ return [
     */
     "default_content_type" => env('DEFAULT_CONTENT_TYPE', "text/html; charset=UTF-8"),
 
+    /*
+    | If this is set to true cache is used to store the routes
+    | into the driver
+    */
+    "use_router_cache" => true,
+
+    /*
+    | This is the driver responsible to store
+    | the route array.
+    | All drivers should derive from \App\Services\CacheService.
+    */
+    "router_cache_driver" => \App\Services\CacheService::class,
+
 ];
