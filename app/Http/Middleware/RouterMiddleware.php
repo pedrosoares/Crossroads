@@ -38,7 +38,7 @@ class RouterMiddleware {
             $headers["Content-Type"] = $headers["Content-Type"] ?? "application/json";
 
             $response = $this->requestService
-                ->request("POST", "http://localhost:8080/auth/can", json_encode($body), $headers);
+                ->request("POST", app("config")["gateway"]["permission_endpoint"], json_encode($body), $headers);
             if(!(is_object($response) && $response->message === "Authorized")){
                 return response('Unauthorized.', 401);
             }

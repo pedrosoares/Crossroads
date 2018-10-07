@@ -28,4 +28,11 @@ return [
     */
     "router_cache_driver" => \App\Services\CacheService::class,
 
+    /*
+    | Authorization end point.
+    | This endpoint is used to validate if the request is allowed to
+    | be performed by the user permission system.
+    */
+    "permission_endpoint" => env('PERMISSION_ENDPOINT', "http://localhost:8080/auth/can"),
+
 ];
