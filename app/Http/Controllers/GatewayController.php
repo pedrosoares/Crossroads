@@ -45,6 +45,8 @@ class GatewayController extends Controller {
         $response = $this->requestService->simpleRequest($method, $url, $body, $headers);
 
         $httpResponse = new Response($response->getBody()->getContents(), $response->getStatusCode());
+
+        $httpResponse->header("Content-Type", $response->getHeader("Content-Type") ?? "text/html; charset=UTF-8");
         /*foreach ($response->getHeaders() as $key => $header) {
             if(!$httpResponse->headers->has($key)) {
                 //$httpResponse->header($key, $header);
