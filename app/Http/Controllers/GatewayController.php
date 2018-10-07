@@ -13,8 +13,14 @@ class GatewayController extends Controller {
      */
     private $requestService;
 
+    /**
+     * @var array
+     */
+    private $configuration;
+
     public function __construct(RequestService $requestService) {
         $this->requestService = $requestService;
+        $this->configuration = app('config');
     }
 
     public function get(Request $request) {
@@ -46,12 +52,14 @@ class GatewayController extends Controller {
 
         $httpResponse = new Response($response->getBody()->getContents(), $response->getStatusCode());
 
-        $httpResponse->header("Content-Type", $response->getHeader("Content-Type") ?? "text/html; charset=UTF-8");
-        /*foreach ($response->getHeaders() as $key => $header) {
-            if(!$httpResponse->headers->has($key)) {
-                //$httpResponse->header($key, $header);
+        if(!$this->configuration["gateway"]["override_header"]) {
+            foreach ($response->getHeaders() as $key => $header) {
+                $httpResponse->header($key, $header);
             }
-        }*/
+        }
+
+        $httpResponse->header("Content-Type", $response->getHeader("Content-Type") ?? $this->configuration["gateway"]["default_content_type"]);
+
         return $httpResponse;
     }
 
