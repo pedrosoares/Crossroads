@@ -8,9 +8,12 @@
 
 namespace App\Http;
 
-
 class Request extends \Illuminate\Http\Request {
 
+    /**
+     * Current router used in this request (Microservice Router)
+     * @var \stdClass
+     */
     private $router;
 
     public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null) {
@@ -23,14 +26,6 @@ class Request extends \Illuminate\Http\Request {
 
     public function getRouter(){
         return $this->router;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRouteParams() {
-        $route = call_user_func($this->getRouteResolver());
-        return $route ? $route[2] : [];
     }
 
 }

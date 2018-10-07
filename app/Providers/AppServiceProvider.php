@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider {
      * @return void
      */
     public function register() {
-        $routes = json_decode(file_get_contents(storage_path('app/router.json')), false);
+        $routes = routes();
 
         foreach ($routes as $id => $route) {
             $method = strtolower($route->method);

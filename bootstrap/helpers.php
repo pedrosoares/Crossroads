@@ -38,7 +38,7 @@ if ( ! function_exists('routes'))  {
      * @return mixed
      */
     function routes($id = null) {
-        $routes = json_decode(file_get_contents(storage_path('app/router.json')), false);
+        $routes = \App\Endpoint::parse(file_get_contents(storage_path('app/router.json')));
         if(is_numeric($id)){
             return $routes[$id - 1];
         }
