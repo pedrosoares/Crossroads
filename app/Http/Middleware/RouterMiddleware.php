@@ -43,6 +43,17 @@ class RouterMiddleware {
                 return response('Unauthorized.', 401);
             }
         }
-        return $next($request);
+
+        $response = $next($request);
+
+        if(isset($route->responses) && count($route->responses) > 0) {
+            foreach($route->responses as $key => $value){
+                if($response->getStatusCode() == $key){
+                    return response($value, $key);
+                }
+            }
+        }
+
+        return $response;
     }
 }
