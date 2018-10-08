@@ -11,6 +11,7 @@ class Endpoint {
     public $method = "";    // Request method
     public $whitelist = []; // List of IpAddress and Domains Allowed to request
     public $permission = [];// List of Permission required to request
+    public $responses = null; // List of default response messages
 
     /**
      * This is a trick to transform the Json Array into
