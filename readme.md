@@ -1,6 +1,6 @@
 ## Auth Microservice
 
-This project use a microservice to controll the auth and permission
+This project uses a microservice to control the authentication and authorization.
 
 https://github.com/pedrosoares/AuthService
 
@@ -20,7 +20,12 @@ https://github.com/pedrosoares/AuthService
     "method": "post",
     "permission": [
       "home"
-    ]
+    ],
+    "responses": {
+      "400": "Invalid ID supplied",
+      "404": "Resource not found",
+      "405": "Validation exception"
+    }
   }
 ]
 ```
