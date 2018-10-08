@@ -5,10 +5,11 @@ namespace App;
 
 class Endpoint {
 
-    public $domain = "";
-    public $uri = "";
-    public $method = "";
-    public $permission = [];
+    public $domain = "";    // Domain of the Microservice
+    public $uri = "";       // Request endpoint
+    public $method = "";    // Request method
+    public $whitelist = []; // List of IpAddress and Domains Allowed to request
+    public $permission = [];// List of Permission required to request
 
 
     /**
