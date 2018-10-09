@@ -30,6 +30,12 @@ class RouterMiddleware {
 
         $request->addRouter($route);
 
+        if(isset($route->whitelist) && count($route->whitelist) > 0) {
+            if(!in_array($request->getClientIp(), $route->whitelist)){
+                return response('Unauthorized.', 401);
+            }
+        }
+
         if(isset($route->permission) && count($route->permission) > 0) {
             $body = [
                 "permissions" => $route->permission
