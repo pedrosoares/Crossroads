@@ -46,7 +46,7 @@ class GatewayController extends Controller {
     public function handler(Request $request, string $method){
         $url = $request->getRouter()->domain."/".$request->path();
         $body = file_get_contents('php://input');
-        $headers = $request->headers->all();
+        $headers = $this->requestService->getHeaders($request);
 
         $response = $this->requestService->simpleRequest($method, $url, $body, $headers);
 

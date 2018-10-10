@@ -9,6 +9,7 @@
 namespace App\Services;
 
 
+use App\Http\Request;
 use GuzzleHttp\Client;
 
 class RequestService {
@@ -38,6 +39,33 @@ class RequestService {
             "body" => $body,
             'http_errors' => false
         ]);
+    }
+
+    /**
+     * This functions is used to parse the request header in a way that the
+     * Nginx will work properly.
+     *
+     * @param Request $request
+     * @param string $domain
+     * @param array $extraHeaders
+     * @return array
+     */
+    public function getHeaders(Request $request, $domain = "", array $extraHeaders = []){
+        $headers = $request->headers->all();
+        $domain = $domain ?? $request->getRouter()->domain;
+        foreach ($headers as $key => $header) {
+            if(is_array($header) && count($header) == 1 && $header[0] == "") {
+                unset($headers[$key]);
+            }
+        }
+        $headers["host"] = str_replace(["http://", "https://"], "", $domain);
+        $headers["content-type"] = $headers["content-type"] ?? app("config")["gateway"]["default_content_type"];
+
+        foreach ($extraHeaders as $key => $value) {
+            $headers[$key] = $value;
+        }
+
+        return $headers;
     }
 
 }

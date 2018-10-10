@@ -34,8 +34,9 @@ class RouterMiddleware {
             $body = [
                 "permissions" => $route->permission
             ];
-            $headers = $request->headers->all();
-            $headers["Content-Type"] = $headers["Content-Type"] ?? "application/json";
+            $headers = $this->requestService->getHeaders($request, null, [
+                "content-type" => "text/json"
+            ]);
 
             $response = $this->requestService
                 ->request("POST", app("config")["gateway"]["permission_endpoint"], json_encode($body), $headers);
@@ -56,4 +57,5 @@ class RouterMiddleware {
 
         return $response;
     }
+
 }
