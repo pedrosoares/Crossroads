@@ -13,6 +13,10 @@ class Endpoint {
     public $permission = [];// List of Permission required to request
     public $responses = null; // List of default response messages
 
+    public function fullUrl() {
+        return $this->domain . $this->uri;
+    }
+
     /**
      * This is a trick to transform the Json Array into
      * a nice object list, you can change this to a more

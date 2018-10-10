@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\GatewayService;
 use App\Services\RequestService;
 use Closure;
 use App\Http\Request;
@@ -37,15 +38,17 @@ class RouterMiddleware {
         }
 
         if(isset($route->permission) && count($route->permission) > 0) {
+            $authRouter = GatewayService::findRoute(
+                app("config")["gateway"]["permission_endpoint"]
+            );
             $body = [
                 "permissions" => $route->permission
             ];
-            $headers = $this->requestService->getHeaders($request, null, [
+            $headers = $this->requestService->getHeaders($request, $authRouter->domain, [
                 "content-type" => "text/json"
             ]);
-
             $response = $this->requestService
-                ->request("POST", app("config")["gateway"]["permission_endpoint"], json_encode($body), $headers);
+                ->request("POST", $authRouter->fullUrl(), json_encode($body), $headers);
             if(!(is_object($response) && $response->message === "Authorized")){
                 return response('Unauthorized.', 401);
             }

@@ -54,4 +54,17 @@ class GatewayService {
         return $cache;
     }
 
+    /**
+     * Find Route By URI
+     *
+     * @param string $uri
+     * @return Endpoint|null
+     */
+    public static function findRoute(string $uri){
+        $routes = GatewayService::getRoutes();
+        return array_first($routes, function (Endpoint $endpoint) use($uri) {
+            return $endpoint->uri == $uri;
+        });
+    }
+
 }
