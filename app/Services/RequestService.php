@@ -34,8 +34,9 @@ class RequestService {
     }
 
     public function simpleRequest($method, $url, $body = "", $headers = []){
+        $requestHeaders = $this->cleanHeaders($headers);
         return $this->client->request(strtoupper($method), $url, [
-            "headers" => $headers,
+            "headers" => $requestHeaders,
             "body" => $body,
             'http_errors' => false
         ]);
@@ -53,11 +54,7 @@ class RequestService {
     public function getHeaders(Request $request, $domain = "", array $extraHeaders = []){
         $headers = $request->headers->all();
         $domain = $domain ?? $request->getRouter()->domain;
-        foreach ($headers as $key => $header) {
-            if(is_array($header) && count($header) == 1 && $header[0] == "") {
-                unset($headers[$key]);
-            }
-        }
+        $headers = $this->cleanHeaders($headers);
         $headers["host"] = str_replace(["http://", "https://"], "", $domain);
         $headers["content-type"] = $headers["content-type"] ?? app("config")["gateway"]["default_content_type"];
 
@@ -65,6 +62,15 @@ class RequestService {
             $headers[$key] = $value;
         }
 
+        return $headers;
+    }
+
+    private function cleanHeaders($headers) {
+        foreach ($headers as $key => $header) {
+            if((is_array($header) && count($header) == 1 && $header[0] == "") || (is_string($header) && $header == "")) {
+                unset($headers[$key]);
+            }
+        }
         return $headers;
     }
 
