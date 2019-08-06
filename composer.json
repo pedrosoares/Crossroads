@@ -1,5 +1,5 @@
 {
-    "name": "pedrosoares/Portao",
+    "name": "pedrosoares/crossroads",
     "description": " API Gateway made with Lumen",
     "keywords": ["microservices", "gateway", "lumen"],
     "license": "MIT",
