@@ -13,7 +13,18 @@ namespace App\Services;
 class StorageService {
 
     public static function get(string $filename) {
-        return file_get_contents(storage_path('app/'.$filename));
+        $location = env('ROUTER_LOCATION', storage_path('app/')).$filename;
+        return file_get_contents($location);
+    }
+
+    public static function put(string $filename, string $content) {
+        $location = env('ROUTER_LOCATION', storage_path('app/')).$filename;
+        return file_put_contents($location, $content);
+    }
+
+    public static function exists(string $filename) {
+        $location = env('ROUTER_LOCATION', storage_path('app/')).$filename;
+        return file_exists($location);
     }
 
 }

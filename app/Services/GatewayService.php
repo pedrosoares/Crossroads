@@ -19,6 +19,19 @@ class GatewayService {
      */
     private static $cache = null;
 
+    private static function buildRoutes() {
+        $source = json_decode(file_get_contents(env('SOURCE_LOCATION', storage_path('app/source.json'))));
+        $routers = [];
+        foreach ($source->microservices as $microservice) {
+            $domain = sprintf("%s://%s:%s", $microservice->protocol, $microservice->domain, $microservice->port);
+            foreach ($microservice->endpoints as $endpoint){
+                $endpoint->domain = $domain;
+                $routers[] = $endpoint;
+            }
+        }
+        StorageService::put("router.json", json_encode($routers));
+    }
+
     /**
      * Return all Endpoints(routes) or if the id is passed
      * return only one, the (ID - 1) because the router system
@@ -42,6 +55,10 @@ class GatewayService {
 
         if($useCache) {
             GatewayService::$cache = app($config["gateway"]["router_cache_driver"]);
+        }
+
+        if(!StorageService::exists("router.json")) {
+            GatewayService::buildRoutes();
         }
 
         $cache = Endpoint::parse(StorageService::get("router.json"));
