@@ -23,7 +23,9 @@ class GatewayService {
         $source = json_decode(file_get_contents(env('SOURCE_LOCATION', storage_path('app/source.json'))));
         $routers = [];
         foreach ($source->microservices as $microservice) {
-            $domain = sprintf("%s://%s:%s", $microservice->protocol, $microservice->domain, $microservice->port);
+            $uri = isset($microservice->uri) ? $microservice->uri : "";
+
+            $domain = sprintf("%s://%s:%s%s", $microservice->protocol, $microservice->domain, $microservice->port, $uri);
             foreach ($microservice->endpoints as $endpoint){
                 $endpoint->domain = $domain;
                 $routers[] = $endpoint;
